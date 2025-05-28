@@ -32,7 +32,87 @@ module.exports = {
             result
 
         })
+    },
+
+    create: async (req,res) => {
+
+        /*
+        #swagger.tags = ["Blogs"]
+        #swagger.summary = "Create Blog"
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+               $ref: "#/components/schemas/Blog"
+            }
+        }
+        */
+
+        const result = await Blog.create(req.body)
+
+        res.status(201).send({
+            error:false,
+            result
+        })
+
+
+    },
+    read: async (req,res) => {
+
+        /*
+        #swagger.tags = ["Blogs"]
+        #swagger.summary = "Get Single Blog"
+        */
+
+        const result = await Blog.findById(req.params.id).populate([
+            { path: 'categoryId', select: 'name' },
+            { path: 'userId', select: 'username email' }
+        ])
+
+        if(!result) throw new CustomError("Blog not found",404);
+
+        res.status(200).send({
+            error:false,
+            result
+        })
+
+    },
+
+    update: async (req, res) => {
+        /*
+        #swagger.tags = ["Blogs"]
+        #swagger.summary = "Update Blog"
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+               $ref: "#/components/schemas/Blog"
+            }
+        }
+        */
+
+
+        const result = await Blog.findByIdAndUpdate(req.params.id, req.body, {
+            runValidators: true,
+            new: true,
+        });
+
+    if (!result) throw new CustomError("Update failed, blog not found", 404);
+
+        res.status(202).send({
+        error: false,
+        result,
+        });
+  },
+
+
+
+
+
     }
+
+
+
 
 
 
