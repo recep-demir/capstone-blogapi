@@ -13,7 +13,17 @@ const PORT = process.env?.PORT || 8000
 const { dbConnection } = require('./src/configs/dbConnection');
 dbConnection();
 
-
+app.all('/', (req, res) => {
+  res.send({
+    error: false,
+    message: 'Welcome to Blog API',
+    documents: {
+      swagger: '/documents/swagger',
+      json: '/documents/json',
+    },
+    user: req.user,
+  });
+});
 
 
 
