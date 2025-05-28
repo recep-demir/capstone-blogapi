@@ -105,6 +105,24 @@ module.exports = {
         });
   },
 
+  deletee: async (req, res) => {
+        /*
+            #swagger.tags = ["Blogs"]
+            #swagger.summary = "Delete Blog"
+        */
+
+        const result = await Blog.findByIdAndDelete(req.params.id)
+
+        if (!result) throw new CustomError("Delete failed, data is not found or already deleted", 404);
+
+        res.status(200).send({
+            error: false,
+            result
+        });
+    },
+
+
+
 
 
 
