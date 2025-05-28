@@ -2,7 +2,7 @@
 
 const { mongoose } = require('../configs/dbConnection')
 
-const BlogSchema = new mongoose.Schema({
+const blogSchema = new mongoose.Schema({
   title: {
     type: String,
     trim: true,
@@ -37,4 +37,4 @@ const BlogSchema = new mongoose.Schema({
   timestamps: true
 })
 
-module.exports = mongoose.model('Blog', BlogSchema)
+module.exports = mongoose.model('Blog', blogSchema)
