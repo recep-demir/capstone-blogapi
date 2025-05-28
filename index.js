@@ -9,6 +9,8 @@ require('dotenv').config();
 const HOST = process.env?.HOST || '127.0.0.1'
 const PORT = process.env?.PORT || 8000
 
+app.use(require('./src/middlewares/queryHandler'))
+
 
 const { dbConnection } = require('./src/configs/dbConnection');
 dbConnection();
@@ -25,6 +27,7 @@ app.all('/', (req, res) => {
   });
 });
 
+app.use(require('./src/middlewares/errorHandler'))
 
 
 
