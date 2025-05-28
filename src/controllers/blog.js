@@ -23,8 +23,10 @@ module.exports = {
 
         const result = await res.getModelList(Blog, {},[
             { path: 'categoryId', select: 'name' },
-            { path: 'userId', select: 'username email' }
+            { path: 'userId', select: 'username' }
         ])
+
+        // const result = await res.getModelList(Blog, {}, ['categoryId', 'userId']);
 
         res.status(200).send({
             error: false,
