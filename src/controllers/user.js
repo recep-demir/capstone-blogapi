@@ -1,6 +1,8 @@
 "use strict"
 
 const User = require("../models/user");
+const CustomError = require("../helpers/customError")
+
 
 module.exports = {
     lst:async (res,req)=>{
@@ -61,22 +63,33 @@ module.exports = {
   },
 
     update: async (req, res) => {
-    /* 
-       #swagger.tags = ['Users']
-       #swagger.summary = 'Update User'
-   */
+        /*
+            #swagger.tags = ["Users"]
+            #swagger.summary = "Update User"
+            #swagger.parameters['body'] = {
+                in: 'body',
+                required: true,
+                schema: {
+                    "username": "test",
+                    "password": "1234",
+                    "email": "test@site.com",
+                    "firstName": "test",
+                    "lastName": "test",
+                }
+            }
+        */
 
 
-    const result = await User.updateOne({ _id: req.params.id }, req.body, {
-      runValidator: true,
-      new: true,
-    });
-    res.status(202).send({
-      error: false,
-      result,
-    });
-  },
-  deleteUser: async (req, res) => {
+    const result = await User.findOneAndUpdate({ _id: req.params.id }, req.body, { runValidators: true, new: true });
+
+        if (!result) throw new CustomError("Update failed, data is not found or already updated", 404);
+
+        res.status(202).send({
+            error: false,
+            result
+        });
+    },
+  deletee: async (req, res) => {
     /* 
         #swagger.tags = ['Users']
         #swagger.summary = 'Delete User'
