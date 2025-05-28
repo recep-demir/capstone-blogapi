@@ -5,12 +5,12 @@ const CustomError = require("../helpers/customError")
 
 
 module.exports = {
-    lst:async (res,req)=>{
+    list:async (req,res)=>{
 
             /* 
             #swagger.tags = ['Users']
             #swagger.summary = 'List Users'
-            #swagger.desription = `
+            #swagger.description = `
                 You can sen query with endpoint for filter[], search[], sort[], page and limit.
                 <ul> Examples usage:
                     <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>

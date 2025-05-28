@@ -3,10 +3,11 @@
 const router = require("express").Router();
 
 const { list, create, read, update, deletee } = require('../controllers/user');
-const { isAdmin,islogin } = require('../middlewares/permissions');
+const { isAdmin,isLogin } = require('../middlewares/permissions');
 
-router.route('/').get(isAdmin,list).post(islogin,create);
-router.route('/:id').get(read).put(islogin,update).patch(islogin,update).delete(isAdmin,deletee)
+
+router.route('/').get(isAdmin, list).post(isLogin,create);
+router.route('/:id').get(read).put(isLogin,update).patch(isLogin,update).delete(isAdmin,deletee)
 
 module.exports = router
 
