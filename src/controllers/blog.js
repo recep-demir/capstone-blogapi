@@ -113,7 +113,7 @@ module.exports = {
 
         const result = await Blog.findByIdAndDelete(req.params.id)
 
-        if (!result) throw new CustomError("Delete failed, data is not found or already deleted", 404);
+        if (!result) throw new CustomError("Delete failed, blog not found or already deleted", 404);
 
         res.status(200).send({
             error: false,
