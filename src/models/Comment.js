@@ -2,7 +2,7 @@
 
 const {mongoose}= require("../configs/dbConnection")
 
-const CommentSchema = new mongoose.schema({
+const CommentSchema = new mongoose.Schema({
     userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
