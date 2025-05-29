@@ -51,7 +51,7 @@ module.exports = {
 
     },
 
-    delete: async (req, res) => {
+    deletee: async (req, res) => {
         // #swagger.ignore = true
 
         const data = await Token.deleteOne({ _id: req.params.id })
