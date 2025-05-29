@@ -4,6 +4,7 @@ const router = require('express').Router()
 
 router.use('/blogs', require('./blog'))
 router.use("/user", require("./user"));
+router.use("/categories", require("./category"));
 
 
 
