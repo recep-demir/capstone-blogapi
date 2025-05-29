@@ -2,7 +2,7 @@
 
 const { mongoose } = require('../configs/dbConnection')
 
-const categorySchema = new mongoose.Schema({
+const CategorySchema = new mongoose.Schema({
 
     name: {
         type: String,
@@ -16,4 +16,4 @@ const categorySchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model("Category", categorySchema);
+module.exports = mongoose.model("Category", CategorySchema);
