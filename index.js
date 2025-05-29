@@ -3,6 +3,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 
 
 require('dotenv').config();
@@ -34,3 +36,6 @@ app.use(require('./src/middlewares/errorHandler'))
 
 
 app.listen(PORT ,HOST, ()=> console.log(`http://${HOST}:${PORT}`))
+
+//! Syncronization: (once run)
+// require('./sync')()
