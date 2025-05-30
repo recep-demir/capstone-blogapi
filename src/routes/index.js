@@ -2,7 +2,7 @@
 
 const router = require('express').Router()
 
-router.use("/auth", require("./auth"));
+
 router.use("/token", require("./token"));
 router.use("/user", require("./user"));
 router.use('/blogs', require('./blog'))
