@@ -49,7 +49,7 @@ module.exports = {
             }
         }
         */
-
+       req.body.userId = req.user._id
         const result = await Blog.create(req.body)
 
         res.status(201).send({
@@ -70,6 +70,9 @@ module.exports = {
             { path: 'categoryId', select: 'name' },
             { path: 'userId', select: 'username email' }
         ])
+
+        await Blog.findByIdAndUpdate(req.params.id, { $inc: { countOfVisitors: 1 } })
+
 
         if(!result) throw new CustomError("Blog not found",404);
 
@@ -98,6 +101,7 @@ module.exports = {
             runValidators: true,
             new: true,
         });
+        if (result.userId.toString() !== req.user._id.toString()) {throw new CustomError("You are not authorized", 403)}
 
     if (!result) throw new CustomError("Update failed, blog not found", 404);
 
@@ -112,6 +116,7 @@ module.exports = {
             #swagger.tags = ["Blogs"]
             #swagger.summary = "Delete Blog"
         */
+       if (result.userId.toString() !== req.user._id.toString()) {throw new CustomError("You are not authorized", 403)}
 
         const result = await Blog.findByIdAndDelete(req.params.id)
 
