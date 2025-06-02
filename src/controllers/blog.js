@@ -23,7 +23,8 @@ module.exports = {
 
         const result = await res.getModelList(Blog, {},[
             { path: 'categoryId', select: 'name' },
-            { path: 'userId', select: 'username' }
+            { path: 'userId', select: 'username' },
+            { path: 'comments', select: 'comment' }
         ])
 
         // const result = await res.getModelList(Blog, {}, ['categoryId', 'userId']);
@@ -68,7 +69,8 @@ module.exports = {
 
         const result = await Blog.findById(req.params.id).populate([
             { path: 'categoryId', select: 'name' },
-            { path: 'userId', select: 'username email' }
+            { path: 'userId', select: 'username email' },
+            { path: 'comments', select: 'comment' }
         ])
 
         await Blog.findByIdAndUpdate(req.params.id, { $inc: { countOfVisitors: 1 } })
@@ -116,11 +118,13 @@ module.exports = {
             #swagger.tags = ["Blogs"]
             #swagger.summary = "Delete Blog"
         */
-       if (result.userId.toString() !== req.user._id.toString()) {throw new CustomError("You are not authorized", 403)}
 
-        const result = await Blog.findByIdAndDelete(req.params.id)
+        const result = await Blog.findById(req.params.id);
 
         if (!result) throw new CustomError("Delete failed, blog not found or already deleted", 404);
+       if (result.userId.toString() !== req.user._id.toString()) {throw new CustomError("You are not authorized", 403)}
+
+       await Blog.findByIdAndDelete(req.params.id);
 
         res.status(200).send({
             error: false,
