@@ -21,7 +21,7 @@ const CommentSchema = new mongoose.Schema({
     }
 
 
-},{collection: 'categories',
+},{collection: 'comments',
     timestamps: true})
 
     module.exports = mongoose.model("Comment",CommentSchema)
