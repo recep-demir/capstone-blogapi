@@ -31,7 +31,7 @@ module.exports = {
          let tokenData = await Token.findOne({ userId: user._id });
 
          if(!tokenData) {
-            tokenData= await TOken.create({
+            tokenData= await Token.create({
                 userId : user._id,
                 token : passwordEncrypt(Date.now() + user._id)
             })
