@@ -3,7 +3,7 @@
 const router = require("express").Router();
 
 const { list, create, read, update, deletee } = require('../controllers/category');
-const { isAdmin,isLogin } = require('../middlewares/permissions');
+const { isAdmin } = require('../middlewares/permissions');
 
 
 router.route('/').get(list).post(isAdmin,create);
