@@ -2,10 +2,11 @@
 
 const router = require('express').Router()
 const blog = require('../controllers/blog')
+const {isLogin} = require('../middlewares/permissions')
 
 router.route('/')
   .get(blog.list)
-  .post(blog.create)
+  .post(isLogin, blog.create)
 
 router.route('/:id')
   .get(blog.read)
