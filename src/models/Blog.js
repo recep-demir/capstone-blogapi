@@ -32,9 +32,13 @@ const BlogSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  comments: [{
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Comment'
+}],
   likes: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'User'
   }],
   countOfVisitors: {
     type: Number,
