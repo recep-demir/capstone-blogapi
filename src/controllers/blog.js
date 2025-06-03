@@ -24,7 +24,8 @@ module.exports = {
         const result = await res.getModelList(Blog, {},[
             { path: 'categoryId', select: 'name' },
             { path: 'userId', select: 'username' },
-            { path: 'comments', populate: { path: 'userId', select: 'username' } }
+            { path: 'comments', populate: { path: 'userId', select: 'username' } },
+            { path: 'likes', select: 'username' }
         ])
 
         // const result = await res.getModelList(Blog, {}, ['categoryId', 'userId']);
@@ -74,7 +75,8 @@ module.exports = {
         const result = await Blog.findById(req.params.id).populate([
             { path: 'categoryId', select: 'name' },
             { path: 'userId', select: 'username email' },
-            { path: 'comments', populate: { path: 'userId', select: 'username' } }
+            { path: 'comments', populate: { path: 'userId', select: 'username' } },
+            { path: 'likes', select: 'username' }
         ])
 
         await Blog.findByIdAndUpdate(req.params.id, { $inc: { countOfVisitors: 1 } })
@@ -135,5 +137,34 @@ module.exports = {
             result
         });
     },
+    toggleLike: async (req, res) => {
+        /*
+        #swagger.tags = ["Blogs"]
+        #swagger.summary = "Toggle Like on a Blog"
+        #swagger.description = "Toggles the current user's like on the blog (adds if not liked, removes if already liked)."
+        */
+        const blogId = req.params.id;
+        const userId = req.user._id;
+
+        const blog = await Blog.findById(blogId);
+        if (!blog) throw new CustomError("Blog not found", 404);
+
+        const hasLiked = blog.likes.includes(userId);
+        const update = hasLiked
+            ? { $pull: { likes: userId } }
+            : { $push: { likes: userId } };
+
+        const result = await Blog.findByIdAndUpdate(
+            blogId,
+            update,
+            { new: true, runValidators: true }
+        ).populate('likes', 'username');
+
+        res.status(200).send({
+            error: false,
+            message: hasLiked ? "Blog unliked successfully" : "Blog liked successfully",
+            result: { ...result.toObject(), likeCount: result.likes.length }
+        });
+    }
 
     }
