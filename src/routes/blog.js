@@ -14,4 +14,6 @@ router.route('/:id')
   .patch(blog.update)
   .delete(blog.deletee)
 
+  router.post('/:id/toggle-like', isLogin, blog.toggleLike)
+
 module.exports = router
