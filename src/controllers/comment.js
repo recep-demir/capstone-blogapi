@@ -41,7 +41,7 @@ module.exports = {
                 }
             }
         */
-
+       req.body.userId = req.user._id 
         const result = await Comment.create(req.body);
 
         res.status(201).send({
