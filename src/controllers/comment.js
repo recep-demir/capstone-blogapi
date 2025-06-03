@@ -1,6 +1,7 @@
 "use strict"
 
 const Comment = require('../models/comment');
+const Blog = require('../models/blog');
 const CustomError = require('../helpers/customError');
 
 module.exports = {
@@ -43,6 +44,10 @@ module.exports = {
         */
        req.body.userId = req.user._id 
         const result = await Comment.create(req.body);
+        await Blog.findByIdAndUpdate(
+      req.body.blogId,
+      { $push: { comments: result._id } }
+    );
 
         res.status(201).send({
             error: false,
@@ -93,9 +98,13 @@ module.exports = {
             #swagger.summary = "Delete Comment"
         */
 
-        const result = await Comment.findByIdAndDelete(req.params.id)
+        const comment = await Comment.findById(req.params.id);
+        if (!comment) throw new CustomError("Comment not found", 404);
 
-        if (!result) throw new CustomError("Delete failed, data is not found or already deleted", 404);
+        const result = await Comment.findByIdAndDelete(req.params.id);
+
+  
+        await Blog.findByIdAndUpdate(comment.blogId, { $pull: { comments: comment._id } });
 
         res.status(200).send({
             error: false,
