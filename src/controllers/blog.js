@@ -24,7 +24,7 @@ module.exports = {
         const result = await res.getModelList(Blog, {},[
             { path: 'categoryId', select: 'name' },
             { path: 'userId', select: 'username' },
-            { path: 'comments', select: 'comment' }
+            { path: 'comments', populate: { path: 'userId', select: 'username' } }
         ])
 
         // const result = await res.getModelList(Blog, {}, ['categoryId', 'userId']);
@@ -53,6 +53,10 @@ module.exports = {
        req.body.userId = req.user._id
         const result = await Blog.create(req.body)
 
+        await Blog.findByIdAndUpdate(req.body.blogId,{
+            $push: { comments: result._id }
+        })
+
         res.status(201).send({
             error:false,
             result
@@ -70,7 +74,7 @@ module.exports = {
         const result = await Blog.findById(req.params.id).populate([
             { path: 'categoryId', select: 'name' },
             { path: 'userId', select: 'username email' },
-            { path: 'comments', select: 'comment' }
+            { path: 'comments', populate: { path: 'userId', select: 'username' } }
         ])
 
         await Blog.findByIdAndUpdate(req.params.id, { $inc: { countOfVisitors: 1 } })
