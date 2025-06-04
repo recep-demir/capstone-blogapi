@@ -5,7 +5,7 @@ const swaggerAutogen = require('swagger-autogen')()
 const packageJson = require('./package.json')
 
 const HOST = process.env.HOST || 'localhost'
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 8000
 
 const document = {
   info: {
@@ -27,19 +27,19 @@ const document = {
   consumes: ['application/json'],
   produces: ['application/json'],
   securityDefinitions: {
-    Bearer: {
-      type: 'apiKey',
-      in: 'header',
-      name: 'Authorization',
-      description: 'JWT Authentication - Example: Bearer <token>'
-    }
+    Token: {
+			type: 'apiKey',
+			in: 'header',
+			name: 'Authorization',
+			description: 'Simple Token Authentication * Example: <b>Token ...tokenKey...</b>'
+		}
   },
-  security: [{ Bearer: [] }],
+  security: [{ Token: [] }],
   definitions: {
-    User: require('./models/User').schema.obj,
-    Blog: require('./models/Blog').schema.obj,
-    Category: require('./models/Category').schema.obj,
-    Comment: require('./models/Comment').schema.obj,
+    "User": require('./src/models/user').schema.obj,
+    "Blog": require('./models/blog').schema.obj,
+    "Category": require('./src/models/category').schema.obj,
+    "Comment": require('./models/comment').schema.obj,
     Token: {
       access: "string",
       refresh: "string"
@@ -47,7 +47,7 @@ const document = {
   }
 }
 
-const routes = ['./server.js']
+const routes = ['./index.js']
 const outputFile = './configs/swagger.json'
 
 swaggerAutogen(outputFile, routes, document)
